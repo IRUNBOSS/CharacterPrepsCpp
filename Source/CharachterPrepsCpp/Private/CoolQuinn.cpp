@@ -39,8 +39,15 @@ void ACoolQuinn::AttachWeaponToHand()
 	}
 }
 
+void ACoolQuinn::FinishEquipping()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 void ACoolQuinn::Move(const FInputActionValue& value)
 {
+	if (ActionState != EActionState::EAS_Unoccupied) return;
+	
 	const FVector2d MovementVector = value.Get<FVector2d>();
 
 	const FRotator Rotation = Controller -> GetControlRotation();
@@ -73,25 +80,31 @@ void ACoolQuinn::EKeyPressed(const FInputActionValue& value)
 	}
 	else
 	{
-		if (CharacterState != ECharacterState::ECS_Unequipped)
+		if (CharacterState != ECharacterState::ECS_Unequipped &&
+			ActionState == EActionState::EAS_Unoccupied)
 		{
 			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 			if (AnimInstance && EquipMontage)
 			{
 				AnimInstance -> Montage_Play(EquipMontage);
 				AnimInstance -> Montage_JumpToSection(FName("WeaponToBack"), EquipMontage);
-				CharacterState = ECharacterState::ECS_Unequipped;
+				
 			}
+			CharacterState = ECharacterState::ECS_Unequipped;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
-		else if (CharacterState == ECharacterState::ECS_Unequipped && EquippedWeapon)
+		else if (CharacterState == ECharacterState::ECS_Unequipped &&
+					ActionState == EActionState::EAS_Unoccupied && EquippedWeapon)
 		{
 			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 			if (AnimInstance && EquipMontage)
 			{
 				AnimInstance -> Montage_Play(EquipMontage);
 				AnimInstance -> Montage_JumpToSection(FName("ArmWeapon"), EquipMontage);
-				CharacterState = ECharacterState::ECS_WeaponBack;
+				
 			}
+			CharacterState = ECharacterState::ECS_EquippedWeapon;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 	}
 }

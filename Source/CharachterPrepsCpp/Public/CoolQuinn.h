@@ -37,6 +37,10 @@ private:
 
 	UPROPERTY()
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY()
+	EActionState ActionState = EActionState::EAS_Unoccupied;
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -60,6 +64,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void AttachWeaponToHand();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishEquipping();
 
 	void Move(const FInputActionValue& value);
 	void Look(const FInputActionValue& value);
