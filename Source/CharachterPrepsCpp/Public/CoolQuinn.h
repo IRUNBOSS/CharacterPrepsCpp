@@ -89,6 +89,7 @@ protected:
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+	FORCEINLINE AWeapon* GetEquippedWeapon() const {return EquippedWeapon; }
 };
 
 
