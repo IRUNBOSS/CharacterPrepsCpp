@@ -43,6 +43,16 @@ private:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void Attack() override;
+	virtual bool CanAttack() override;
+	virtual void AttackEnd() override;
+
+	void Disarm();
+	bool CanDisarm();
+	void Arm();
+	bool CanArm();
+	void PlayEquipMantage(const FName& SectionName);
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)
 	UInputAction* MoveAction;
@@ -55,6 +65,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)
 	UInputAction* EquipAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* AttackAction;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)
 	UInputMappingContext* CoolQuinnContext;
@@ -71,6 +84,7 @@ protected:
 	void Move(const FInputActionValue& value);
 	void Look(const FInputActionValue& value);
 	void EKeyPressed(const FInputActionValue& value);
+	
 	
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

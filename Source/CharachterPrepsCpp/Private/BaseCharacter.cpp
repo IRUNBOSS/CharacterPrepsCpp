@@ -18,6 +18,48 @@ void ABaseCharacter::BeginPlay()
 	
 }
 
+void ABaseCharacter::AttackEnd()
+{
+	
+}
+
+void ABaseCharacter::Attack()
+{
+	
+}
+
+bool ABaseCharacter::CanAttack()
+{
+	
+	return false;
+}
+
+int32 ABaseCharacter::PlayAttackMontage()
+{
+	
+	return PlayRandomMontageSection(AttackMontage, AttackMontageSections);
+}
+
+inline int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames)
+{
+	if (SectionNames.Num()<=0) return -1;
+
+	const int32 MaxSectionIndex = SectionNames.Num() - 1;
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);
+	PlayMontageSection(AnimMontage,SectionNames[Selection]);
+	return Selection;
+}
+
+void ABaseCharacter::PlayMontageSection(UAnimMontage* AnimMontage, const FName& SectionName)
+{
+	UAnimInstance* AnimInsatance = GetMesh() -> GetAnimInstance();
+	if (AnimInsatance && AnimMontage)
+	{
+		AnimInsatance -> Montage_Play(AnimMontage);
+		AnimInsatance ->Montage_JumpToSection(SectionName,AnimMontage);
+	}
+}
+
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {

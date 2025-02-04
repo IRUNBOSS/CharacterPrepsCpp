@@ -23,6 +23,29 @@ void ACoolQuinn::BeginPlay()
 	
 }
 
+void ACoolQuinn::Attack()
+{
+	Super::Attack();
+
+	if (CanAttack())
+	{
+		PlayAttackMontage();
+		ActionState =EActionState::EAS_Attacking;
+	}
+}
+
+bool ACoolQuinn::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState == ECharacterState::ECS_EquippedWeapon;
+}
+
+void ACoolQuinn::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+
 void ACoolQuinn::AttachWeaponToBack()
 {
 	if (EquippedWeapon)
@@ -80,32 +103,52 @@ void ACoolQuinn::EKeyPressed(const FInputActionValue& value)
 	}
 	else
 	{
-		if (CharacterState != ECharacterState::ECS_Unequipped &&
-			ActionState == EActionState::EAS_Unoccupied)
+		if (CanDisarm())
 		{
-			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-			if (AnimInstance && EquipMontage)
-			{
-				AnimInstance -> Montage_Play(EquipMontage);
-				AnimInstance -> Montage_JumpToSection(FName("WeaponToBack"), EquipMontage);
-				
-			}
-			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Disarm();
 		}
-		else if (CharacterState == ECharacterState::ECS_Unequipped &&
-					ActionState == EActionState::EAS_Unoccupied && EquippedWeapon)
+		else if (CanArm())
 		{
-			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-			if (AnimInstance && EquipMontage)
-			{
-				AnimInstance -> Montage_Play(EquipMontage);
-				AnimInstance -> Montage_JumpToSection(FName("ArmWeapon"), EquipMontage);
-				
-			}
-			CharacterState = ECharacterState::ECS_EquippedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Arm();
 		}
+	}
+}
+
+
+void ACoolQuinn::Disarm()
+{
+	PlayEquipMantage(FName("WeaponToBack"));
+	CharacterState = ECharacterState::ECS_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+bool ACoolQuinn::CanDisarm()
+{
+	return CharacterState != ECharacterState::ECS_Unequipped &&
+			ActionState == EActionState::EAS_Unoccupied;
+}
+
+void ACoolQuinn::Arm()
+{
+	PlayEquipMantage(FName("ArmWeapon"));
+	CharacterState = ECharacterState::ECS_EquippedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+bool ACoolQuinn::CanArm()
+{
+	return CharacterState == ECharacterState::ECS_Unequipped &&
+					ActionState == EActionState::EAS_Unoccupied && EquippedWeapon;
+}
+
+void ACoolQuinn::PlayEquipMantage(const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance -> Montage_Play(EquipMontage);
+		AnimInstance -> Montage_JumpToSection(SectionName, EquipMontage);
+				
 	}
 }
 
@@ -119,7 +162,8 @@ void ACoolQuinn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCom
 		EnhancedInputComponent -> BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACoolQuinn::Move);
 		EnhancedInputComponent -> BindAction(LookAction, ETriggerEvent::Triggered, this, &ACoolQuinn::Look);
 		EnhancedInputComponent -> BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACoolQuinn::Jump);
-		EnhancedInputComponent -> BindAction(EquipAction, ETriggerEvent::Triggered, this, &ACoolQuinn::EKeyPressed);
+		EnhancedInputComponent -> BindAction(EquipAction,ETriggerEvent::Triggered, this, &ACoolQuinn::EKeyPressed);
+		EnhancedInputComponent -> BindAction(AttackAction,ETriggerEvent::Triggered, this, &ACoolQuinn::Attack);
 	}
 }
 

@@ -24,6 +24,23 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;
 
+	UFUNCTION(BLueprintCallable)
+	virtual void AttackEnd();
+	
+	virtual void Attack();
+	virtual bool CanAttack();
+	virtual int32 PlayAttackMontage();
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category=Combat)
+	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TArray<FName> AttackMontageSections;
+
+	int32 PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames);
+	void PlayMontageSection(UAnimMontage* AnimMontage, const FName& SectionName);
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -32,3 +49,5 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
+
+
