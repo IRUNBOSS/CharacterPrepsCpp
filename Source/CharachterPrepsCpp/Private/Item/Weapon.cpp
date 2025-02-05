@@ -3,6 +3,7 @@
 
 #include "Item/Weapon.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 AWeapon::AWeapon()
@@ -13,7 +14,15 @@ AWeapon::AWeapon()
 	WeaponBox ->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	WeaponBox ->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponBox ->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn,ECollisionResponse::ECR_Ignore);
-		
+
+	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
+	BoxTraceStart ->SetupAttachment(GetRootComponent());
+
+	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
+	BoxTraceEnd ->SetupAttachment(GetRootComponent());
+
+	
+	
 }
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
@@ -40,6 +49,32 @@ void AWeapon::BeginPlay()
 void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Blue,TEXT("OnBoxOverlap"));
+	FHitResult BoxHit;
+	BoxTrace(BoxHit);
 }
+
+void AWeapon::BoxTrace(FHitResult& BoxHit)
+{
+	const FVector Start = BoxTraceStart -> GetComponentLocation();
+	const FVector End = BoxTraceEnd -> GetComponentLocation();
+	TArray<AActor*> ActorsToIgnore;
+	UKismetSystemLibrary::BoxTraceSingle(
+		this,
+		Start,
+		End,
+		BoxTraceExtent,
+		BoxTraceStart -> GetComponentRotation(),
+		TraceTypeQuery1,
+		false,
+		ActorsToIgnore,
+		EDrawDebugTrace::ForDuration,
+		BoxHit,
+		true,
+		FColor::Red,
+		FColor::Green,
+		2.f
+	);
+	
+}
+
+

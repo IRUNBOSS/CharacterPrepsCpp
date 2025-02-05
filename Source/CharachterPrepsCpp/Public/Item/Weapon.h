@@ -28,8 +28,20 @@ protected:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	
 private:
-	UPROPERTY(VisibleDefaultsOnly, Category = "Weapon Proerties")
+	void BoxTrace(FHitResult& BoxHit);
+
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	FVector BoxTraceExtent = FVector(5.0f);
+	
+	UPROPERTY(VisibleDefaultsOnly, Category = "Weapon Properties")
 	UBoxComponent* WeaponBox;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceEnd;
+
 
 public:
 	FORCEINLINE UBoxComponent* GetWeaponBox() const {return WeaponBox;}
