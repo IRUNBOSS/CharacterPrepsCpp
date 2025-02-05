@@ -4,6 +4,7 @@
 #include "Item/Weapon.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/SphereComponent.h"
 
 
 AWeapon::AWeapon()
@@ -30,6 +31,10 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 	SetOwner(NewOwner);
 	SetInstigator(NewInstigator);
 	AttachMeshToSocket(InParent, InSocketName);
+	if (Sphere)
+	{
+		Sphere -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 	
 	
 }
