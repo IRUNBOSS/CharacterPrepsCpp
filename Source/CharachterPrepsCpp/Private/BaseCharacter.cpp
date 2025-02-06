@@ -3,6 +3,8 @@
 
 #include "BaseCharacter.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
@@ -16,6 +18,51 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
+{
+	if (Hitter)
+	{
+		DirectionalHitReact(Hitter->GetActorLocation());
+	}
+}
+
+void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
+{
+	const FVector Forward = GetActorForwardVector();
+	const FVector Impact_L(ImpactPoint.X,ImpactPoint.Y,GetActorLocation().Z);
+	const FVector ToHit = (Impact_L - GetActorLocation()).GetSafeNormal();
+	const double CosTheta =FVector::DotProduct(Forward,ToHit);
+	double Theta = FMath::Acos(CosTheta);
+	Theta = FMath::RadiansToDegrees(Theta);
+
+	const FVector CrossProduct = FVector::CrossProduct(Forward,ToHit);
+
+	if (CrossProduct.Z < 0)
+		Theta *= -1.f;
+	
+
+	FName Section("FromBack");
+	
+	if (Theta >=-45.f && Theta < 45.f)
+		Section = "FromFront";
+	else if (Theta > -135.f && Theta < -45.f)
+		Section = "FromLeft";
+	else if ( Theta > 45.f && Theta < 135.f)
+		Section = "FromRight";
+
+	PlayHitReactMontage(Section);
+}
+
+void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HitReactMontage)
+	{
+		AnimInstance -> Montage_Play(HitReactMontage);
+		AnimInstance-> Montage_JumpToSection(SectionName, HitReactMontage);
+	}
 }
 
 void ABaseCharacter::AttackEnd()

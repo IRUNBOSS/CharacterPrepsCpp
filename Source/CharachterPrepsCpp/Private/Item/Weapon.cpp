@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/SphereComponent.h"
+#include "Interface/HitInterface.h"
 
 
 AWeapon::AWeapon()
@@ -51,11 +52,26 @@ void AWeapon::BeginPlay()
 	WeaponBox ->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnBoxOverlap);
 }
 
+
 void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                           int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	FHitResult BoxHit;
 	BoxTrace(BoxHit);
+
+	if (BoxHit.GetActor())
+	{
+		ExecuteGetHit(BoxHit);
+	}
+}
+
+void AWeapon::ExecuteGetHit(FHitResult& BoxHit)
+{
+	IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
+	if (HitInterface)
+	{
+		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint,GetOwner());
+	}
 }
 
 void AWeapon::BoxTrace(FHitResult& BoxHit)

@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Item/Weapon.h"
+#include "Interface/HitInterface.h"
 
 #include "BaseCharacter.generated.h"
 
+class AWeapon;
+
 UCLASS()
-class CHARACHTERPREPSCPP_API ABaseCharacter : public ACharacter
+class CHARACHTERPREPSCPP_API ABaseCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -20,6 +22,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
+	void DirectionalHitReact(const FVector& ImpactPoint);
+	void PlayHitReactMontage(const FName& SectionName);
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;
@@ -34,6 +39,9 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Combat)
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category=Combat)
+	UAnimMontage* HitReactMontage;
 
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TArray<FName> AttackMontageSections;
