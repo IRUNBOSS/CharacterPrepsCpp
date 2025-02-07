@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item/Item.h"
+
 #include "Weapon.generated.h"
 
 class UBoxComponent;
