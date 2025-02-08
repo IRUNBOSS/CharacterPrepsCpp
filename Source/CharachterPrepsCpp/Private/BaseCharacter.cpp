@@ -2,15 +2,14 @@
 
 
 #include "BaseCharacter.h"
-
-#include "Kismet/GameplayStatics.h"
+#include "Components/AttributeComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 }
 
 // Called when the game starts or when spawned
@@ -62,6 +61,14 @@ void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
 	{
 		AnimInstance -> Montage_Play(HitReactMontage);
 		AnimInstance-> Montage_JumpToSection(SectionName, HitReactMontage);
+	}
+}
+
+void ABaseCharacter::HandleDamage(float Damage)
+{
+	if (Attributes)
+	{
+		Attributes -> ReceiveDamage(Damage);
 	}
 }
 

@@ -20,14 +20,17 @@ public:
 	ABaseCharacter();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
 	void DirectionalHitReact(const FVector& ImpactPoint);
 	void PlayHitReactMontage(const FName& SectionName);
+	virtual void HandleDamage(float Damage);
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;
+
+	UPROPERTY(VisibleAnywhere)
+	class UAttributeComponent* Attributes;
 
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();
@@ -57,5 +60,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
+
 
 

@@ -5,6 +5,14 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 
+float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	HandleDamage(DamageAmount);
+	
+	return DamageAmount;
+}
+
 void AEnemy::BeginPlay()
 {
 	InitializeEnemy();

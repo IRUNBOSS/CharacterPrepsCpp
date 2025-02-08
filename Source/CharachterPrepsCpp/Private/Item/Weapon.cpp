@@ -4,6 +4,7 @@
 #include "Item/Weapon.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "Interface/HitInterface.h"
 
@@ -61,6 +62,8 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 
 	if (BoxHit.GetActor())
 	{
+		UGameplayStatics::ApplyDamage(BoxHit.GetActor(),20.f,GetInstigatorController(),
+			this, UDamageType::StaticClass());
 		ExecuteGetHit(BoxHit);
 	}
 }
