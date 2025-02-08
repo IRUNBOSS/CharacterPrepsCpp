@@ -17,6 +17,7 @@ public:
 	UAttributeComponent();
 	void ReceiveDamage(float Damage);
 	
+	
 
 private:
 	UPROPERTY(EditAnywhere, Category="Actor Attributes")
@@ -32,6 +33,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	bool IsAlive();
 		
 };

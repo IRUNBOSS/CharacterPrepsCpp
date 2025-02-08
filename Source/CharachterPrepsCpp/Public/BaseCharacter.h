@@ -24,6 +24,7 @@ protected:
 	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
 	void DirectionalHitReact(const FVector& ImpactPoint);
 	void PlayHitReactMontage(const FName& SectionName);
+	virtual int32 PlayDeathMontage();
 	virtual void HandleDamage(float Damage);
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
@@ -34,6 +35,9 @@ protected:
 
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Die();
 	
 	virtual void Attack();
 	virtual bool CanAttack();
@@ -46,11 +50,19 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category=Combat)
 	UAnimMontage* HitReactMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category=Combat)
+	UAnimMontage* DeathMontage;
+
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TArray<FName> AttackMontageSections;
 
 	int32 PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames);
 	void PlayMontageSection(UAnimMontage* AnimMontage, const FName& SectionName);
+	bool IsAlive();
+
+	
+
+	
 	
 public:	
 	// Called every frame
@@ -58,7 +70,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 };
 
 

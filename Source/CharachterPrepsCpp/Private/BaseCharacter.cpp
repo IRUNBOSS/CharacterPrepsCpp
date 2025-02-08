@@ -21,9 +21,13 @@ void ABaseCharacter::BeginPlay()
 
 void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 {
-	if (Hitter)
+	if (IsAlive()&&Hitter)
 	{
 		DirectionalHitReact(Hitter->GetActorLocation());
+	}
+	else
+	{
+		Die();
 	}
 }
 
@@ -62,6 +66,13 @@ void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
 		AnimInstance -> Montage_Play(HitReactMontage);
 		AnimInstance-> Montage_JumpToSection(SectionName, HitReactMontage);
 	}
+}
+
+int32 ABaseCharacter::PlayDeathMontage()
+{
+	GetController() ->StopMovement();
+	PlayMontageSection(DeathMontage,FName("DeathFront"));
+	return int32();
 }
 
 void ABaseCharacter::HandleDamage(float Damage)
@@ -113,6 +124,19 @@ void ABaseCharacter::PlayMontageSection(UAnimMontage* AnimMontage, const FName& 
 		AnimInsatance ->Montage_JumpToSection(SectionName,AnimMontage);
 	}
 }
+
+bool ABaseCharacter::IsAlive()
+{
+	return Attributes && Attributes -> IsAlive();
+}
+
+void ABaseCharacter::Die_Implementation()
+{
+
+	PlayDeathMontage();
+	
+}
+
 
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
