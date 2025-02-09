@@ -42,6 +42,7 @@ protected:
 	virtual void Attack();
 	virtual bool CanAttack();
 	virtual int32 PlayAttackMontage();
+	void DisableCapsule();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Combat)

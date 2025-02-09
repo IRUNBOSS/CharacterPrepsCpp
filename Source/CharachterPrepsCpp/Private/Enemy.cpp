@@ -38,6 +38,7 @@ void AEnemy::Die_Implementation()
 {
 	Super::Die_Implementation();
 	EnemyState = EEnemyState::EES_Dead;
+	DisableCapsule();
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)

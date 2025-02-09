@@ -3,6 +3,7 @@
 
 #include "BaseCharacter.h"
 #include "Components/AttributeComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -102,6 +103,11 @@ int32 ABaseCharacter::PlayAttackMontage()
 {
 	
 	return PlayRandomMontageSection(AttackMontage, AttackMontageSections);
+}
+
+void ABaseCharacter::DisableCapsule()
+{
+	GetCapsuleComponent() ->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 inline int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames)
