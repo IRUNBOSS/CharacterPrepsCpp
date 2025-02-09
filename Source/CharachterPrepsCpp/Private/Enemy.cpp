@@ -23,8 +23,21 @@ void AEnemy::BeginPlay()
 
 void AEnemy::Tick(float DeltaTime)
 {
-	CheckPatrolTarget();
 	Super::Tick(DeltaTime);
+	
+	if (IsDead())
+	{
+		GetController() ->StopMovement();
+		return;
+	}
+		
+	
+}
+
+void AEnemy::Die_Implementation()
+{
+	Super::Die_Implementation();
+	EnemyState = EEnemyState::EES_Dead;
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
@@ -47,6 +60,11 @@ void AEnemy::CheckPatrolTarget()
 void AEnemy::PatrolTimerFinished()
 {
 	MoveToTarget(PatrolTarget);
+}
+
+bool AEnemy::IsDead()
+{
+	return EnemyState==EEnemyState::EES_Dead;
 }
 
 AActor* AEnemy::ChoosePatrolTarget()

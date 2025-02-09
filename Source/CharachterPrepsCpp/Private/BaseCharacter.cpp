@@ -70,7 +70,6 @@ void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
 
 int32 ABaseCharacter::PlayDeathMontage()
 {
-	GetController() ->StopMovement();
 	PlayMontageSection(DeathMontage,FName("DeathFront"));
 	return int32();
 }

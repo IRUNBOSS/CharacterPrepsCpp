@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
+#include "CharacterTypes.h"
+
 #include "Enemy.generated.h"
 
 /**
@@ -24,6 +26,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void Die_Implementation() override;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 private:
 	
@@ -35,6 +41,7 @@ private:
 	AActor* ChoosePatrolTarget();
 	FTimerHandle PatrolTimer;
 	void PatrolTimerFinished();
+	bool IsDead();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
