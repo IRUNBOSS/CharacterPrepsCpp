@@ -34,6 +34,7 @@ protected:
 private:
 	
 	class AAIController* EnemyController;
+
 	void InitializeEnemy();
 	void MoveToTarget(AActor* Target);
 	bool InTargetRange(AActor* Target, double Radius);

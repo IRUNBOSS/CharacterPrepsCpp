@@ -27,11 +27,10 @@ void AEnemy::Tick(float DeltaTime)
 	
 	if (IsDead())
 	{
-		GetController() ->StopMovement();
+		GetController() -> StopMovement();
 		return;
 	}
-		
-	
+	CheckPatrolTarget();
 }
 
 void AEnemy::Die_Implementation()
@@ -84,6 +83,7 @@ AActor* AEnemy::ChoosePatrolTarget()
 	{
 		const int32 TargetSelection=FMath::RandRange(0, NumPatrolTargets-1);
 		return ValidTargets[TargetSelection];
+		
 	}
 	
 	return nullptr;
