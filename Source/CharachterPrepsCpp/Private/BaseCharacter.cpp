@@ -71,8 +71,12 @@ void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
 
 int32 ABaseCharacter::PlayDeathMontage()
 {
-	PlayMontageSection(DeathMontage,FName("DeathFront"));
-	return int32();
+	const int32 Selection = PlayRandomMontageSection(DeathMontage,DeathMontageSections);
+	TEnumAsByte<EDeathPose> Pose(Selection);
+	if (Pose< EDeathPose::EDP_MAX)
+		DeathPose = Pose;
+	
+	return Selection;
 }
 
 void ABaseCharacter::HandleDamage(float Damage)

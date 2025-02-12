@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interface/HitInterface.h"
+#include "CharacterTypes.h"
 
 #include "BaseCharacter.generated.h"
 
@@ -26,13 +27,16 @@ protected:
 	void PlayHitReactMontage(const FName& SectionName);
 	virtual int32 PlayDeathMontage();
 	virtual void HandleDamage(float Damage);
-
+	
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;
 
 	UPROPERTY(VisibleAnywhere)
 	class UAttributeComponent* Attributes;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	TEnumAsByte<EDeathPose> DeathPose;
+	
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();
 
@@ -56,6 +60,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TArray<FName> AttackMontageSections;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TArray<FName> DeathMontageSections;
 
 	int32 PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames);
 	void PlayMontageSection(UAnimMontage* AnimMontage, const FName& SectionName);

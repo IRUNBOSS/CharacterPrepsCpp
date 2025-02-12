@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Item/Weapon.h"
 
 float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
 	AActor* DamageCauser)

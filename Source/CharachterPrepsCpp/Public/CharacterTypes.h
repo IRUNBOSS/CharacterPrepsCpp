@@ -28,3 +28,15 @@ enum class EEnemyState : uint8
 	EES_Patrolling UMETA(DisplayName = "Patrolling")
 	
 };
+
+UENUM(BlueprintType)
+
+enum EDeathPose
+{
+	EDP_DeadFront UMETA(DisplayName = "DeadFront"),
+	EDP_DeadBack UMETA(DisplayName = "DeadBack"),
+	EDP_DeadRight UMETA(DisplayName = "DeadRight"),
+	
+	EDP_MAX UMETA(DisplayName = "DeadMAX")
+	
+};

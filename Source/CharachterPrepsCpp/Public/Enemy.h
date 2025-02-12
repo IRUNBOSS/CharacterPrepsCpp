@@ -52,5 +52,8 @@ private:
 
 	UPROPERTY(EditInstanceOnly, Category="AI Navigation")
 	TArray<AActor*> PatrolTargets;
+
+	UPROPERTY(EditAnywhere, Category= Combat)
+	TSubclassOf<class AWeapon> WeaponClass;
 	
 };
