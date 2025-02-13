@@ -18,6 +18,7 @@ class CHARACHTERPREPSCPP_API AEnemy : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
+	AEnemy();
 	virtual float TakeDamage(float DamageAmount,  
 	struct FDamageEvent const & DamageEvent,  
 	class AController * EventInstigator,  
@@ -43,6 +44,7 @@ private:
 	FTimerHandle PatrolTimer;
 	void PatrolTimerFinished();
 	bool IsDead();
+	void SpawnDefaultWeapon();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
@@ -55,5 +57,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category= Combat)
 	TSubclassOf<class AWeapon> WeaponClass;
+
+	UPROPERTY(EditAnywhere, Category= Combat)
+	UStaticMeshComponent* ShieldComponent;
 	
 };

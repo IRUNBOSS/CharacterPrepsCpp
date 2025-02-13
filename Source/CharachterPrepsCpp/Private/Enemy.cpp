@@ -6,8 +6,21 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Item/Weapon.h"
 
+AEnemy::AEnemy()
+{
+	ResetOwnedComponents();
+
+	ShieldComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Shield"));
+	ShieldComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	UStaticMesh* ShieldMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Megascans/3D_Assets/Wooden_Wheel_ugrfefpfa/S_Wooden_Wheel_ugrfefpfa_lod3_Var1"));
+	if (ShieldMesh)
+		ShieldComponent -> SetStaticMesh(ShieldMesh);
+	const FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+	ShieldComponent -> AttachToComponent(GetMesh(), TransformRules, FName("ShieldSocket"));
+}
+
 float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
-	AActor* DamageCauser)
+                         AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);
 	
@@ -68,6 +81,19 @@ bool AEnemy::IsDead()
 	return EnemyState==EEnemyState::EES_Dead;
 }
 
+void AEnemy::SpawnDefaultWeapon()
+{
+	UWorld* World = GetWorld();
+	if (World && WeaponClass)
+	{
+		AWeapon* DefaultWeapon = World ->SpawnActor<AWeapon>(WeaponClass);
+		DefaultWeapon -> Equip(GetMesh(), FName("WeaponSocket"),this,this);
+		EquippedWeapon= DefaultWeapon;
+	}
+
+	
+}
+
 AActor* AEnemy::ChoosePatrolTarget()
 {
 	TArray<AActor*> ValidTargets;
@@ -96,6 +122,7 @@ void AEnemy::InitializeEnemy()
 {
 	EnemyController= Cast<AAIController>(GetController());
 	MoveToTarget(PatrolTarget);
+	SpawnDefaultWeapon();
 	
 }
 
