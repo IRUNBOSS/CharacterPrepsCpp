@@ -52,7 +52,15 @@ void AEnemy::Tick(float DeltaTime)
 		GetController() -> StopMovement();
 		return;
 	}
-	CheckPatrolTarget();
+	if (EnemyState > EEnemyState::EES_Patrolling)
+	{
+		CheckCombatTarget();
+	}
+	else
+	{
+		CheckPatrolTarget();
+	}
+	
 }
 
 void AEnemy::Die_Implementation()
@@ -113,6 +121,36 @@ void AEnemy::ChaseTarget()
 	EnemyState = EEnemyState::EES_Chasing;
 	GetCharacterMovement() -> MaxWalkSpeed = ChasingSpeed;
 	MoveToTarget(CombatTarget);
+}
+
+void AEnemy::StartPatrolling()
+{
+	EnemyState = EEnemyState::EES_Patrolling;
+	GetCharacterMovement() -> MaxWalkSpeed = PatrollingSpeed;
+	MoveToTarget(PatrolTarget);
+}
+
+void AEnemy::CheckCombatTarget()
+{
+	if (IsOutsideCombatRadius())
+	{
+		LoseInterest();
+		StartPatrolling();
+	}
+	else
+	{
+		ChaseTarget();
+	}
+}
+
+bool AEnemy::IsOutsideCombatRadius()
+{
+	return !InTargetRange(CombatTarget, CombatRadius);
+}
+
+void AEnemy::LoseInterest()
+{
+	CombatTarget = nullptr;
 }
 
 

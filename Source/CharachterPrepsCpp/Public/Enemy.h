@@ -49,9 +49,16 @@ private:
 	void SpawnDefaultWeapon();
 	void ClearPatrolTimer();
 	void ChaseTarget();
+	void StartPatrolling();
+	void CheckCombatTarget();
+	bool IsOutsideCombatRadius();
+	void LoseInterest();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	double CombatRadius =500.f;
 	
 	UPROPERTY(EditInstanceOnly, Category="AI Navigation")
 	AActor* PatrolTarget;
