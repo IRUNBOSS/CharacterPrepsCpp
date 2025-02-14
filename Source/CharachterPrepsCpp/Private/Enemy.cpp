@@ -6,6 +6,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Item/Weapon.h"
 #include "Perception/PawnSensingComponent.h"
+#include  "GameFramework/CharacterMovementComponent.h"
 
 AEnemy::AEnemy()
 {
@@ -102,11 +103,18 @@ void AEnemy::SpawnDefaultWeapon()
 	
 }
 
-void AEnemy::PawnSeen(APawn* SeenPawn)
+void AEnemy::ClearPatrolTimer()
 {
-	if (GEngine)
-		GEngine-> AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("PawnSeen"));
+	GetWorldTimerManager().ClearTimer(PatrolTimer);
 }
+
+void AEnemy::ChaseTarget()
+{
+	EnemyState = EEnemyState::EES_Chasing;
+	GetCharacterMovement() -> MaxWalkSpeed = ChasingSpeed;
+	MoveToTarget(CombatTarget);
+}
+
 
 AActor* AEnemy::ChoosePatrolTarget()
 {
@@ -149,5 +157,18 @@ void AEnemy::MoveToTarget(AActor* Target)
 	
 }
 
+void AEnemy::PawnSeen(APawn* SeenPawn)
+{
+	const bool bShouldChaseTarget=
+		SeenPawn -> ActorHasTag(FName("EngageableTarget"));
+
+	if (bShouldChaseTarget)
+	{
+		CombatTarget = SeenPawn;
+		ClearPatrolTimer();
+		ChaseTarget();
+	}
+		
+}
 
 

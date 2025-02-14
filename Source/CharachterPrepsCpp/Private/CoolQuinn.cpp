@@ -11,7 +11,7 @@
 void ACoolQuinn::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Tags.Add(FName("EngageableTarget"));
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem

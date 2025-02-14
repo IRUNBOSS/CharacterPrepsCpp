@@ -36,6 +36,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TEnumAsByte<EDeathPose> DeathPose;
+
+	UPROPERTY(BlueprintReadWrite, Category=Combat);
+	AActor* CombatTarget;
 	
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();

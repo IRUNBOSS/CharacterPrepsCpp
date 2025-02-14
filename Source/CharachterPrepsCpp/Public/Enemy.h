@@ -47,6 +47,8 @@ private:
 	void PatrolTimerFinished();
 	bool IsDead();
 	void SpawnDefaultWeapon();
+	void ClearPatrolTimer();
+	void ChaseTarget();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
@@ -65,6 +67,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* PawnSensing;
+
+	UPROPERTY(EditAnywhere, category=Combat)
+	float PatrollingSpeed =125.f;
+
+	UPROPERTY(EditAnywhere, category=Combat)
+	float ChasingSpeed =300.f;
 
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
