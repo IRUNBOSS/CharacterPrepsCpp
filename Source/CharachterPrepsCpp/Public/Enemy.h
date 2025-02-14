@@ -8,6 +8,8 @@
 
 #include "Enemy.generated.h"
 
+class UPawnSensingComponent;
+
 /**
  * 
  */
@@ -60,5 +62,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category= Combat)
 	UStaticMeshComponent* ShieldComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensing;
+
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn);
 	
 };

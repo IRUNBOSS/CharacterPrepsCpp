@@ -5,6 +5,7 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Item/Weapon.h"
+#include "Perception/PawnSensingComponent.h"
 
 AEnemy::AEnemy()
 {
@@ -17,6 +18,11 @@ AEnemy::AEnemy()
 		ShieldComponent -> SetStaticMesh(ShieldMesh);
 	const FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ShieldComponent -> AttachToComponent(GetMesh(), TransformRules, FName("ShieldSocket"));
+
+	PawnSensing=CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
+	PawnSensing ->SightRadius=6000;
+	PawnSensing -> SetPeripheralVisionAngle(60.f);
+	
 }
 
 float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
@@ -29,6 +35,7 @@ float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEv
 
 void AEnemy::BeginPlay()
 {
+	if (PawnSensing) PawnSensing -> OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
 	InitializeEnemy();
 	Super::BeginPlay();
 	
@@ -52,6 +59,7 @@ void AEnemy::Die_Implementation()
 	Super::Die_Implementation();
 	EnemyState = EEnemyState::EES_Dead;
 	DisableCapsule();
+	DisableMeshCollision();
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
@@ -92,6 +100,12 @@ void AEnemy::SpawnDefaultWeapon()
 	}
 
 	
+}
+
+void AEnemy::PawnSeen(APawn* SeenPawn)
+{
+	if (GEngine)
+		GEngine-> AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("PawnSeen"));
 }
 
 AActor* AEnemy::ChoosePatrolTarget()

@@ -18,6 +18,7 @@ void UDisableBoxCollision::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 			{
 				CoolQuinnActor ->GetEquippedWeapon()-> GetWeaponBox()->
 					SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				CoolQuinnActor ->GetEquippedWeapon()-> IgnoreActors.Empty();
 			}
 			
 		}

@@ -47,6 +47,7 @@ protected:
 	virtual bool CanAttack();
 	virtual int32 PlayAttackMontage();
 	void DisableCapsule();
+	void DisableMeshCollision();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Combat)

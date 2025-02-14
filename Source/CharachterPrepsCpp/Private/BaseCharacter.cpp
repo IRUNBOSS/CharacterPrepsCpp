@@ -114,6 +114,11 @@ void ABaseCharacter::DisableCapsule()
 	GetCapsuleComponent() ->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void ABaseCharacter::DisableMeshCollision()
+{
+	GetMesh() -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 inline int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames)
 {
 	if (SectionNames.Num()<=0) return -1;

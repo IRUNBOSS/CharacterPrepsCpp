@@ -82,6 +82,11 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 	const FVector Start = BoxTraceStart -> GetComponentLocation();
 	const FVector End = BoxTraceEnd -> GetComponentLocation();
 	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+	ActorsToIgnore.Add(GetOwner());
+	for (AActor* Actor:IgnoreActors)
+		ActorsToIgnore.AddUnique(Actor);
+	
 	UKismetSystemLibrary::BoxTraceSingle(
 		this,
 		Start,
@@ -98,6 +103,9 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 		FColor::Green,
 		2.f
 	);
+
+	if (BoxHit.GetActor())
+		IgnoreActors.AddUnique(BoxHit.GetActor());
 	
 }
 
