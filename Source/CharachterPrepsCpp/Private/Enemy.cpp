@@ -148,6 +148,11 @@ bool AEnemy::IsOutsideCombatRadius()
 	return !InTargetRange(CombatTarget, CombatRadius);
 }
 
+bool AEnemy::IsInsideCombatRadius()
+{
+	return InTargetRange(CombatTarget, CombatRadius);
+}
+
 void AEnemy::LoseInterest()
 {
 	CombatTarget = nullptr;
@@ -203,10 +208,12 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 	if (bShouldChaseTarget)
 	{
 		CombatTarget = SeenPawn;
-		ClearPatrolTimer();
-		ChaseTarget();
+		if (IsInsideCombatRadius())
+		{
+			ClearPatrolTimer();
+			ChaseTarget();
+		}
 	}
-		
 }
 
 

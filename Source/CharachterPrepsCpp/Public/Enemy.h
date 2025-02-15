@@ -52,6 +52,7 @@ private:
 	void StartPatrolling();
 	void CheckCombatTarget();
 	bool IsOutsideCombatRadius();
+	bool IsInsideCombatRadius();
 	void LoseInterest();
 
 	UPROPERTY(EditAnywhere)
