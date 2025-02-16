@@ -215,5 +215,3 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		}
 	}
 }
-
-
