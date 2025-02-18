@@ -35,7 +35,6 @@ protected:
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 private:
-	
 	class AAIController* EnemyController;
 
 	void InitializeEnemy();
