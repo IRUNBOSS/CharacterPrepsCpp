@@ -30,6 +30,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void Die_Implementation() override;
+	virtual void Attack() override;
+	virtual bool CanAttack() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
@@ -53,12 +55,17 @@ private:
 	bool IsOutsideCombatRadius();
 	bool IsInsideCombatRadius();
 	void LoseInterest();
+	bool IsOutSideAttackRadius();
+	bool IsEngaged();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	double CombatRadius =500.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	double AttackRadius =200.f;
 	
 	UPROPERTY(EditInstanceOnly, Category="AI Navigation")
 	AActor* PatrolTarget;

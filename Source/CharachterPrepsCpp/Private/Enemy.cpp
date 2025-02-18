@@ -71,6 +71,7 @@ void AEnemy::Die_Implementation()
 	DisableMeshCollision();
 }
 
+
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
 {
 	if (Target == nullptr) return false;
@@ -137,10 +138,30 @@ void AEnemy::CheckCombatTarget()
 		LoseInterest();
 		StartPatrolling();
 	}
-	else
+	else if (IsOutsideCombatRadius())
 	{
 		ChaseTarget();
 	}
+	else if (CanAttack())
+	{
+		Attack();
+	}
+}
+
+void AEnemy::Attack()
+{
+	Super::Attack();
+
+	EnemyState = EEnemyState::EES_Engaged;
+
+	PlayAttackMontage();
+}
+
+bool AEnemy::CanAttack()
+{
+	bool bCanAttack = !IsEngaged();
+
+	return bCanAttack;
 }
 
 bool AEnemy::IsOutsideCombatRadius()
@@ -156,6 +177,16 @@ bool AEnemy::IsInsideCombatRadius()
 void AEnemy::LoseInterest()
 {
 	CombatTarget = nullptr;
+}
+
+bool AEnemy::IsOutSideAttackRadius()
+{
+	return !InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsEngaged()
+{
+	return EnemyState == EEnemyState::EES_Engaged;
 }
 
 
