@@ -144,7 +144,8 @@ void AEnemy::CheckCombatTarget()
 	}
 	else if (CanAttack())
 	{
-		Attack();
+		if (!GetWorldTimerManager().IsTimerActive(AttackTimer))
+			StartAttackTimer();
 	}
 }
 
@@ -167,7 +168,7 @@ bool AEnemy::CanAttack()
 void AEnemy::AttackEnd()
 {
 	EnemyState = EEnemyState::EES_NoState;
-	CheckPatrolTarget();
+	CheckCombatTarget();
 }
 
 bool AEnemy::IsOutsideCombatRadius()
@@ -193,6 +194,17 @@ bool AEnemy::IsOutSideAttackRadius()
 bool AEnemy::IsEngaged()
 {
 	return EnemyState == EEnemyState::EES_Engaged;
+}
+
+void AEnemy::StartAttackTimer()
+{
+	const float AttackTime = FMath::RandRange(AttackMin, AttackMax);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime);
+}
+
+void AEnemy::ClearAttackTimer()
+{
+	GetWorldTimerManager().ClearTimer(AttackTimer);
 }
 
 

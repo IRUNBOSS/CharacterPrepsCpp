@@ -46,6 +46,7 @@ private:
 	void CheckPatrolTarget();
 	AActor* ChoosePatrolTarget();
 	FTimerHandle PatrolTimer;
+	FTimerHandle AttackTimer;
 	void PatrolTimerFinished();
 	bool IsDead();
 	void SpawnDefaultWeapon();
@@ -58,6 +59,8 @@ private:
 	void LoseInterest();
 	bool IsOutSideAttackRadius();
 	bool IsEngaged();
+	void StartAttackTimer();
+	void ClearAttackTimer();
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;
@@ -89,6 +92,12 @@ private:
 	UPROPERTY(EditAnywhere, category=Combat)
 	float ChasingSpeed =300.f;
 
+	UPROPERTY(EditAnywhere, category=Combat)
+	float AttackMin = 0.5f;
+
+	UPROPERTY(EditAnywhere, category=Combat)
+	float AttackMax = 1.f;
+	
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
 	
