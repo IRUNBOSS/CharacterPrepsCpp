@@ -164,6 +164,12 @@ bool AEnemy::CanAttack()
 	return bCanAttack;
 }
 
+void AEnemy::AttackEnd()
+{
+	EnemyState = EEnemyState::EES_NoState;
+	CheckPatrolTarget();
+}
+
 bool AEnemy::IsOutsideCombatRadius()
 {
 	return !InTargetRange(CombatTarget, CombatRadius);
@@ -233,7 +239,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
-	const bool bShouldChaseTarget=
+	const bool bShouldChaseTarget= !IsEngaged() &&
 		SeenPawn -> ActorHasTag(FName("EngageableTarget"));
 
 	if (bShouldChaseTarget)

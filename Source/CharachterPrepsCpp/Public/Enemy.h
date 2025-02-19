@@ -32,6 +32,7 @@ protected:
 	virtual void Die_Implementation() override;
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
+	virtual void AttackEnd() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
