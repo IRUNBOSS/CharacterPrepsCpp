@@ -8,6 +8,19 @@
 #include "Item/Weapon.h"
 
 
+ACoolQuinn::ACoolQuinn()
+{
+	GetMesh()-> SetCollisionProfileName(FName("Custom..."));
+	GetMesh()->SetCollisionObjectType(ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
+}
+
+
+
+
 void ACoolQuinn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -43,6 +56,15 @@ bool ACoolQuinn::CanAttack()
 void ACoolQuinn::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
+}
+void ACoolQuinn::HitReactEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ACoolQuinn::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
+{
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
 }
 
 
@@ -166,6 +188,7 @@ void ACoolQuinn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCom
 		EnhancedInputComponent -> BindAction(AttackAction,ETriggerEvent::Triggered, this, &ACoolQuinn::Attack);
 	}
 }
+
 
 
 void ACoolQuinn::SetOverlappingItem(AItem* item)

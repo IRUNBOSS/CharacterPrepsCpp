@@ -4,6 +4,7 @@
 #include "AnimNotifies/DisableBoxCollision.h"
 #include "CoolQuinn.h"
 #include "Item/Weapon.h"
+#include "Enemy.h"
 #include "Components/BoxComponent.h"
 
 void UDisableBoxCollision::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -19,6 +20,18 @@ void UDisableBoxCollision::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 				CoolQuinnActor ->GetEquippedWeapon()-> GetWeaponBox()->
 					SetCollisionEnabled(ECollisionEnabled::NoCollision);
 				CoolQuinnActor ->GetEquippedWeapon()-> IgnoreActors.Empty();
+			}
+			
+		}
+
+		AEnemy* EnemyActor= Cast<AEnemy>(AnimInstance->TryGetPawnOwner());
+		if (EnemyActor)
+		{
+			if (EnemyActor ->GetEquippedWeapon())
+			{
+				EnemyActor ->GetEquippedWeapon()-> GetWeaponBox()->
+					SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				EnemyActor ->GetEquippedWeapon()-> IgnoreActors.Empty();
 			}
 			
 		}

@@ -25,6 +25,7 @@ class CHARACHTERPREPSCPP_API ACoolQuinn : public ABaseCharacter, public IPickUpI
 {
 	GENERATED_BODY()
 public:
+	ACoolQuinn();
 	virtual void SetOverlappingItem(AItem* item) override;
 	
 private:
@@ -35,17 +36,21 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* EquipMontage;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	EActionState ActionState = EActionState::EAS_Unoccupied;
+
+	UFUNCTION(BlueprintCallable)
+	void HitReactEnd();
 	
 protected:
 	virtual void BeginPlay() override;
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
 	virtual void AttackEnd() override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
 
 	void Disarm();
 	bool CanDisarm();
@@ -89,7 +94,6 @@ protected:
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
-	FORCEINLINE AWeapon* GetEquippedWeapon() const {return EquippedWeapon; }
 };
 
 
