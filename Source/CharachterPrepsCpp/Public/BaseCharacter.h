@@ -27,6 +27,8 @@ protected:
 	void PlayHitReactMontage(const FName& SectionName);
 	virtual int32 PlayDeathMontage();
 	virtual void HandleDamage(float Damage);
+	void StopAttackMontage();
+
 	
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;

@@ -66,6 +66,9 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::Die_Implementation()
 {
 	Super::Die_Implementation();
+
+	ClearAttackTimer();
+	StopAttackMontage();
 	EnemyState = EEnemyState::EES_Dead;
 	DisableCapsule();
 	DisableMeshCollision();
@@ -144,8 +147,7 @@ void AEnemy::CheckCombatTarget()
 	}
 	else if (CanAttack())
 	{
-		if (!GetWorldTimerManager().IsTimerActive(AttackTimer))
-			StartAttackTimer();
+		StartAttackTimer();
 	}
 }
 
@@ -160,7 +162,7 @@ void AEnemy::Attack()
 
 bool AEnemy::CanAttack()
 {
-	bool bCanAttack = !IsEngaged();
+	bool bCanAttack = !IsEngaged() && !IsAttacking();
 
 	return bCanAttack;
 }
@@ -169,6 +171,14 @@ void AEnemy::AttackEnd()
 {
 	EnemyState = EEnemyState::EES_NoState;
 	CheckCombatTarget();
+}
+
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
+{
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
+
+	ClearAttackTimer();
+	StopAttackMontage();
 }
 
 bool AEnemy::IsOutsideCombatRadius()
@@ -196,8 +206,14 @@ bool AEnemy::IsEngaged()
 	return EnemyState == EEnemyState::EES_Engaged;
 }
 
+bool AEnemy::IsAttacking()
+{
+	return EnemyState == EEnemyState::EES_Attacking;
+}
+
 void AEnemy::StartAttackTimer()
 {
+	EnemyState = EEnemyState::EES_Attacking;
 	const float AttackTime = FMath::RandRange(AttackMin, AttackMax);
 	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime);
 }
@@ -251,7 +267,10 @@ void AEnemy::MoveToTarget(AActor* Target)
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
-	const bool bShouldChaseTarget= !IsEngaged() &&
+	const bool bShouldChaseTarget=
+		!IsEngaged() &&
+			!IsAttacking() &&
+				!IsDead() &&
 		SeenPawn -> ActorHasTag(FName("EngageableTarget"));
 
 	if (bShouldChaseTarget)

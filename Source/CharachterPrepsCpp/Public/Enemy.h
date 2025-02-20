@@ -33,6 +33,8 @@ protected:
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
 	virtual void AttackEnd() override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
+
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
@@ -59,6 +61,7 @@ private:
 	void LoseInterest();
 	bool IsOutSideAttackRadius();
 	bool IsEngaged();
+	bool IsAttacking();
 	void StartAttackTimer();
 	void ClearAttackTimer();
 

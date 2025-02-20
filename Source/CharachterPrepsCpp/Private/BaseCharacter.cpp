@@ -87,6 +87,15 @@ void ABaseCharacter::HandleDamage(float Damage)
 	}
 }
 
+void ABaseCharacter::StopAttackMontage()
+{
+	UAnimInstance* AnimInsatance = GetMesh() -> GetAnimInstance();
+	if (AnimInsatance)
+	{
+		AnimInsatance ->Montage_Stop(0.25f, AttackMontage);
+	}
+}
+
 void ABaseCharacter::AttackEnd()
 {
 	
