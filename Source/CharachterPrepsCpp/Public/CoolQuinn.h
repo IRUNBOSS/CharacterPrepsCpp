@@ -56,7 +56,7 @@ protected:
 	bool CanDisarm();
 	void Arm();
 	bool CanArm();
-	void PlayEquipMantage(const FName& SectionName);
+	void PlayEquipMontage(const FName& SectionName);
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)

@@ -139,7 +139,7 @@ void ACoolQuinn::EKeyPressed(const FInputActionValue& value)
 
 void ACoolQuinn::Disarm()
 {
-	PlayEquipMantage(FName("WeaponToBack"));
+	PlayEquipMontage(FName("WeaponToBack"));
 	CharacterState = ECharacterState::ECS_Unequipped;
 	ActionState = EActionState::EAS_EquippingWeapon;
 }
@@ -152,7 +152,7 @@ bool ACoolQuinn::CanDisarm()
 
 void ACoolQuinn::Arm()
 {
-	PlayEquipMantage(FName("ArmWeapon"));
+	PlayEquipMontage(FName("ArmWeapon"));
 	CharacterState = ECharacterState::ECS_EquippedWeapon;
 	ActionState = EActionState::EAS_EquippingWeapon;
 }
@@ -163,7 +163,7 @@ bool ACoolQuinn::CanArm()
 					ActionState == EActionState::EAS_Unoccupied && EquippedWeapon;
 }
 
-void ACoolQuinn::PlayEquipMantage(const FName& SectionName)
+void ACoolQuinn::PlayEquipMontage(const FName& SectionName)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && EquipMontage)
