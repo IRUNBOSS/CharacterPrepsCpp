@@ -62,10 +62,12 @@ private:
 	bool IsInsideCombatRadius();
 	void LoseInterest();
 	bool IsOutSideAttackRadius();
+	bool IsInsideAttackRadius();
 	bool IsEngaged();
 	bool IsAttacking();
 	void StartAttackTimer();
 	void ClearAttackTimer();
+	
 
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius =200.f;

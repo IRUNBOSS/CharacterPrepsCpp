@@ -30,6 +30,15 @@ float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEv
                          AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);
+	CombatTarget = EventInstigator->GetPawn();
+	if (IsInsideAttackRadius())
+	{
+		EnemyState = EEnemyState::EES_Attacking;;
+	}
+	else if (IsOutSideAttackRadius())
+	{
+		ChaseTarget();
+	}
 	
 	return DamageAmount;
 }
@@ -199,6 +208,11 @@ void AEnemy::LoseInterest()
 bool AEnemy::IsOutSideAttackRadius()
 {
 	return !InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsInsideAttackRadius()
+{
+	return InTargetRange (CombatTarget,AttackRadius);
 }
 
 bool AEnemy::IsEngaged()
