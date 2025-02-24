@@ -27,6 +27,10 @@ class CHARACHTERPREPSCPP_API ACoolQuinn : public ABaseCharacter, public IPickUpI
 public:
 	ACoolQuinn();
 	virtual void SetOverlappingItem(AItem* item) override;
+	virtual float TakeDamage(float DamageAmount,  
+	struct FDamageEvent const & DamageEvent,  
+	class AController * EventInstigator,  
+	AActor * DamageCauser)override;
 	
 private:
 

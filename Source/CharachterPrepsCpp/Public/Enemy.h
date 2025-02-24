@@ -65,6 +65,7 @@ private:
 	bool IsInsideAttackRadius();
 	bool IsEngaged();
 	bool IsAttacking();
+	bool IsChasing();
 	void StartAttackTimer();
 	void ClearAttackTimer();
 	

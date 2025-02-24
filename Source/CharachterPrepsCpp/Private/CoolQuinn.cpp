@@ -197,3 +197,11 @@ void ACoolQuinn::SetOverlappingItem(AItem* item)
 
 	OverlappingItem = item;
 }
+
+float ACoolQuinn::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	HandleDamage(DamageAmount);
+
+	return DamageAmount;
+}

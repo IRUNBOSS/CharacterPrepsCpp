@@ -150,9 +150,11 @@ void AEnemy::CheckCombatTarget()
 		LoseInterest();
 		StartPatrolling();
 	}
-	else if (IsOutsideCombatRadius())
+	else if (IsOutsideCombatRadius()&& !IsChasing())
 	{
-		ChaseTarget();
+		ClearAttackTimer();
+		if (!IsEngaged())
+			ChaseTarget();
 	}
 	else if (CanAttack())
 	{
@@ -223,6 +225,11 @@ bool AEnemy::IsEngaged()
 bool AEnemy::IsAttacking()
 {
 	return EnemyState == EEnemyState::EES_Attacking;
+}
+
+bool AEnemy::IsChasing()
+{
+	return EnemyState == EEnemyState::EES_Chasing;
 }
 
 void AEnemy::StartAttackTimer()
