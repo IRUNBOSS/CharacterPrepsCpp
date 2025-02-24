@@ -165,7 +165,8 @@ void AEnemy::CheckCombatTarget()
 void AEnemy::Attack()
 {
 	Super::Attack();
-
+	if (CombatTarget == nullptr) return;
+		
 	EnemyState = EEnemyState::EES_Engaged;
 
 	PlayAttackMontage();

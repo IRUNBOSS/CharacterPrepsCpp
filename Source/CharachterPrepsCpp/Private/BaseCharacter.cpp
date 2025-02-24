@@ -103,7 +103,10 @@ void ABaseCharacter::AttackEnd()
 
 void ABaseCharacter::Attack()
 {
-	
+	if (CombatTarget && CombatTarget -> ActorHasTag(FName("Dead")))
+	{
+		CombatTarget = nullptr;
+	}
 }
 
 bool ABaseCharacter::CanAttack()
@@ -155,7 +158,7 @@ bool ABaseCharacter::IsAlive()
 
 void ABaseCharacter::Die_Implementation()
 {
-
+	Tags.Add(FName("Dead"));
 	PlayDeathMontage();
 	
 }

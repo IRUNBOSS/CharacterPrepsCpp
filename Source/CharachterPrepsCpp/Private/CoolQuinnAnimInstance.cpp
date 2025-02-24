@@ -31,6 +31,8 @@ void UCoolQuinnAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			UKismetMathLibrary::VSizeXY(MovementComponent->GetCurrentAcceleration()) != 0;
 
 		CharacterState= CoolQuinnActor->GetCharacterState();
+		ActionState = CoolQuinnActor->GetActionState();
+		DeathPose = CoolQuinnActor->GetDeathPose();
 	}
 	
 }

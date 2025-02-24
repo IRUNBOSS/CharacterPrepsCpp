@@ -55,6 +55,7 @@ protected:
 	virtual bool CanAttack() override;
 	virtual void AttackEnd() override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
+	virtual void Die_Implementation() override;
 
 	void Disarm();
 	bool CanDisarm();
@@ -98,6 +99,8 @@ protected:
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+	FORCEINLINE EActionState GetActionState() const { return ActionState; }
+	
 };
 
 

@@ -67,6 +67,14 @@ void ACoolQuinn::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitte
 	Super::GetHit_Implementation(ImpactPoint, Hitter);
 }
 
+void ACoolQuinn::Die_Implementation()
+{
+	Super::Die_Implementation();
+
+	ActionState = EActionState::EAS_Dead;
+	DisableMeshCollision();
+}
+
 
 void ACoolQuinn::AttachWeaponToBack()
 {
