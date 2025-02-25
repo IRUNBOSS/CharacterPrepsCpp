@@ -41,10 +41,19 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category=Combat);
 	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	double WarpTargetDistance = 75.f;
 	
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();
 
+	UFUNCTION(BLueprintCallable)
+	FVector GetTranslationWarpTarget();
+
+	UFUNCTION(BLueprintCallable)
+	FVector GetRotationWarpTarget();
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void Die();
 	

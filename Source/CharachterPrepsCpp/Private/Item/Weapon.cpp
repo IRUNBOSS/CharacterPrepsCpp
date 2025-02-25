@@ -96,7 +96,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 		TraceTypeQuery1,
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		BoxHit,
 		true,
 		FColor::Red,
