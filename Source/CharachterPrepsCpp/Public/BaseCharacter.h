@@ -44,6 +44,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	double WarpTargetDistance = 75.f;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	UParticleSystem* HitParticles;
 	
 	UFUNCTION(BLueprintCallable)
 	virtual void AttackEnd();
@@ -62,6 +65,7 @@ protected:
 	virtual int32 PlayAttackMontage();
 	void DisableCapsule();
 	void DisableMeshCollision();
+	void SpawnHitParticles(const FVector& ImpactPoint);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Combat)

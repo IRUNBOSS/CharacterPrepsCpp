@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "Components/AttributeComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -30,6 +31,8 @@ void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* H
 	{
 		Die();
 	}
+
+	SpawnHitParticles(ImpactPoint);
 }
 
 void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
@@ -150,6 +153,17 @@ void ABaseCharacter::DisableCapsule()
 void ABaseCharacter::DisableMeshCollision()
 {
 	GetMesh() -> SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ABaseCharacter::SpawnHitParticles(const FVector& ImpactPoint)
+{
+	if (HitParticles && GetWorld())
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint);
+	}
 }
 
 inline int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* AnimMontage, const TArray<FName>& SectionNames)
