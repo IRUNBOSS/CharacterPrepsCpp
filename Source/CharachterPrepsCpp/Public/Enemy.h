@@ -9,6 +9,7 @@
 #include "Enemy.generated.h"
 
 class UPawnSensingComponent;
+class UHealthBarComponent;
 
 /**
  * 
@@ -34,6 +35,7 @@ protected:
 	virtual bool CanAttack() override;
 	virtual void AttackEnd() override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Hitter) override;
+	virtual void HandleDamage(float DamageAmount) override;
 
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
@@ -105,6 +107,10 @@ private:
 
 	UPROPERTY(EditAnywhere, category=Combat)
 	float AttackMax = 1.f;
+
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget; 
+	
 	
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);

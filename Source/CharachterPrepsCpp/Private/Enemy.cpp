@@ -3,10 +3,12 @@
 
 #include "Enemy.h"
 #include "AIController.h"
+#include "Components/AttributeComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Item/Weapon.h"
 #include "Perception/PawnSensingComponent.h"
-#include  "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "HUD/HealthBarComponent.h"
 
 AEnemy::AEnemy()
 {
@@ -23,7 +25,9 @@ AEnemy::AEnemy()
 	PawnSensing=CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
 	PawnSensing ->SightRadius=6000;
 	PawnSensing -> SetPeripheralVisionAngle(60.f);
-	
+
+	HealthBarWidget=CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
 }
 
 float AEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
@@ -191,6 +195,14 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 
 	ClearAttackTimer();
 	StopAttackMontage();
+}
+
+void AEnemy::HandleDamage(float DamageAmount)
+{
+	Super::HandleDamage(DamageAmount);
+
+	if (Attributes && HealthBarWidget)
+		HealthBarWidget->SetHealthBarPercent(Attributes->GetHealthPercent());
 }
 
 bool AEnemy::IsOutsideCombatRadius()
